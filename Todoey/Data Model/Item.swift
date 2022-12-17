@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Item {
+class Item: Codable { // so that the data can be encoded into plist or json
     var title: String = ""
     var done: Bool = false
 }
