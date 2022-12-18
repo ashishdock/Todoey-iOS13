@@ -11,7 +11,7 @@ import CoreData
 
 class CategoryViewController: UITableViewController {
 
-    var categories = [ItemGroups]
+    var categories = [ItemGroups]()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -64,10 +64,10 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadCategories() {
-        let request : NSFetchRequest<Category1> = Category1.fetchRequest(request)
+        let request : NSFetchRequest<ItemGroups> = ItemGroups.fetchRequest()
         
         do {
-            try context.fetch(request)
+            categories = try context.fetch(request)
         } catch {
             print("Error loading categories \(error)")
         }
@@ -83,7 +83,7 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let newCategory = Category1(context: self.context)
+            let newCategory = ItemGroups(context: self.context)
             newCategory.name = textField.text!
             
             self.categories.append(newCategory)
