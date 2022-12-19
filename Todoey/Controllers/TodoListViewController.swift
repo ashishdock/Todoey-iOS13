@@ -8,8 +8,9 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
 
     var itemArray: Results<Item>?
     
@@ -37,10 +38,17 @@ class TodoListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = itemArray?[indexPath.row] {
             cell.textLabel?.text = item.title
+            
+            let categoryColor = UIColor(hexString: selectedCategory!.colour)
+            if let colour =  categoryColor!.darken(byPercentage:(CGFloat(indexPath.row) / CGFloat(itemArray!.count))) {
+                cell.backgroundColor = colour
+                cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+            }
+            
             
     //        cell.accessoryType = item.done ? .checkmark : .none
             
@@ -155,7 +163,25 @@ class TodoListViewController: UITableViewController {
 
         tableView.reloadData()
     }
+    
+    
+    //MARK: - Delete Data From Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        print("\(itemArray![indexPath.row].title) deleted" )
+        if let item = itemArray?[indexPath.row] {
+            do {
+                try realm.write {
+                    realm.delete(item)
+                }
+            } catch {
+                print("Error deleting category, \(error)")
+            }
+        }
+    }
+    
 }
+
 
 //MARK: - Search bar methods
 
