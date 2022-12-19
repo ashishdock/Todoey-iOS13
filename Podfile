@@ -7,5 +7,6 @@ target 'Todoey' do
 
   # Pods for Todoey
   pod 'RealmSwift', '10.9.0'
+  pod 'SwipeCellKit'
 
 end

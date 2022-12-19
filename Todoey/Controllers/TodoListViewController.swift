@@ -155,8 +155,6 @@ class TodoListViewController: UITableViewController {
 
         tableView.reloadData()
     }
-    
-    
 }
 
 //MARK: - Search bar methods
